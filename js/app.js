@@ -14,7 +14,7 @@
     // Choropleth colors from http://colorbrewer2.org/
     // You can choose your own range (or different number of colors)
     // and the code will compensate.
-    var hues = [
+    /*var hues = [
         '#eff3ff',
         '#bdd7e7',
         '#6baed6',
@@ -35,16 +35,16 @@
         .appendTo($('#variables'))
         .on('change', function() {
             setVariable($(this).val());
-        });*/
+        });
     for (var i = 0; i < variables.length; i++) {
         ranges[variables[i]] = { min: Infinity, max: -Infinity };
         // Simultaneously, build the UI for selecting different
         // ranges
-       /* $('<option></option>')
+        $('<option></option>')
             .text(variables[i])
             .attr('value', variables[i])
-            .appendTo($select);*/
-    }
+            .appendTo($select);
+    }*/
     
     // load in census tracts and add to map
     var censusTracts = L.mapbox.featureLayer()
@@ -55,13 +55,14 @@
     // loads json rent data and joins
     function loadData() {
         $.getJSON('data/median-gross-rent.json')
-            .done(function(rentData) {
-                joinData(rentData, censusTracts); // calls joinData function
+            .done(function(data) {
+                joinData(data, censusTracts); // calls joinData function
             });
     } // end loadData()
     
     // joins 
-    function joinData(rentData, censusTracts) {
+    function joinData(data, censusTracts) {
+        
         // First, get the census tract GeoJSON data for reference.
         var portGeoJSON = censusTracts.getGeoJSON(),
             byTract = {};
@@ -96,7 +97,7 @@
         }
         portLayer.setGeoJSON(newFeatures);
         // Kick off by filtering on an attribute.
-        setVariable(variables[1]);
+        //setVariable(variables[1]);
         
     } // end joinData()
     
@@ -104,7 +105,7 @@
     // variable, but rather the variable by which the map is colored.
     // The input is a string 'name', which specifies which column
     // of the imported JSON file is used to color the map.
-    function setVariable(GEOID) {
+    /*function setVariable(GEOID) {
         var scale = ranges[GEOID];
         portLayer.eachLayer(function(layer) {
             // Decide the color for each state by finding its
@@ -123,6 +124,6 @@
             });
         });
     } // end setVariable()
-
+*/
     
 })();
