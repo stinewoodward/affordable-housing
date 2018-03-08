@@ -55,13 +55,13 @@
     // loads json rent data and joins
     function loadData() {
         $.getJSON('data/median-gross-rent.json')
-            .done(function(data) {
-                joinData(data, censusTracts); // calls joinData function
+            .done(function(rentData) {
+                joinData(rentData, censusTracts); // calls joinData function
             });
     } // end loadData()
     
     // joins 
-    function joinData(data, censusTracts) {
+    function joinData(rentData, censusTracts) {
         
         // First, get the census tract GeoJSON data for reference.
         var portGeoJSON = censusTracts.getGeoJSON(),
