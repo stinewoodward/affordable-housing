@@ -48,20 +48,39 @@
     
     // load in census tracts and add to map
     var censusTracts = L.mapbox.featureLayer()
-      .loadURL('data/or_census_tracts.geojson')
-      .addTo(map)
-      .on('ready', loadData); // calls loadData function to load in json data
+          .loadURL('data/or_census_tracts.json')
+          .addTo(map)
+          .on('ready', loadData);
     
-    // loads json rent data and joins
+    // Grab the spreadsheet of data as JSON. If you have CSV
+    // data, you should convert it to JSON with
+    // http://shancarter.github.io/mr-data-converter/
     function loadData() {
         $.getJSON('data/median-gross-rent.json')
-            .done(function(rentData) {
-                joinData(rentData, censusTracts); // calls joinData function
+            .done(function(data) {
+                joinData(data, usLayer);
+                console.log(data);
             });
-    } // end loadData()
+    }
+
+        
+    /*var rentData = Papa.parse('data/median_gross_rent.csv', {
+
+        download: true,
+        header: true,
+        complete: function(results) {
+
+            console.log(results.data);
+            return results.data;
+
+            }
+    }); // end of Papa.parse()
+    */
     
-    // joins 
-    function joinData(rentData, censusTracts) {
+    // join
+    function joinData(data, censusTracts) {
+    
+        
         
         // First, get the census tract GeoJSON data for reference.
         var portGeoJSON = censusTracts.getGeoJSON(),
@@ -75,17 +94,17 @@
                 portGeoJSON.features[i];
         }
                     
-        for (i = 0; i < rentData.length; i++) {
+        for (i = 0; i < data.length; i++) {
             // Match the GeoJSON data (byTract) with the tabular data
-            // (rentData), replacing the GeoJSON feature properties
+            // (data), replacing the GeoJSON feature properties
             // with the full data.
-            byTract[rentData[i].GEOID].properties = rentData[i];
+            byTract[data[i].GEOID].properties = data[i];
             for (var j = 0; j < variables.length; j++) {
                 // Simultaneously build the table of min and max
                 // values for each attribute.
                 var n = variables[j];
-                ranges[n].min = Math.min(rentData[i][n], ranges[n].min);
-                ranges[n].max = Math.max(rentData[i][n], ranges[n].max);
+                ranges[n].min = Math.min(data[i][n], ranges[n].min);
+                ranges[n].max = Math.max(data[i][n], ranges[n].max);
             }
         }
         
@@ -105,7 +124,7 @@
     // variable, but rather the variable by which the map is colored.
     // The input is a string 'name', which specifies which column
     // of the imported JSON file is used to color the map.
-    /*function setVariable(GEOID) {
+    function setVariable(GEOID) {
         var scale = ranges[GEOID];
         portLayer.eachLayer(function(layer) {
             // Decide the color for each state by finding its
@@ -124,6 +143,6 @@
             });
         });
     } // end setVariable()
-*/
+
     
 })();
