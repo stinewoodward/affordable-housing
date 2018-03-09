@@ -18,14 +18,3 @@ hr.small, hr.large {
     border: 1px dashed #ccc;     /* overwrite assembly.css rule */
     margin-top: 8px;            /* overwrite assembly.css rule */
 }
-.menu-ui {
-  position:absolute;
-  top:10px;
-  right:10px;
-  }
-
-/* Do a fancy data transition for browsers that support it */
-path {
-  -webkit-transition:fill 200ms;
-          transition:fill 200ms;
-  }
