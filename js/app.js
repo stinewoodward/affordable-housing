@@ -23,7 +23,7 @@
 
     // request data
     var censusTractJson = d3.json('data/or_census_tracts.json'),
-        rentCSV= d3.csv('data/aff_housing_data.csv');
+        rentCSV= d3.json('data/aff_housing_data.json');
 
     // use the Promise to wait until all data files are loaded
     Promise.all([censusTractJson, rentCSV]).then(ready);
@@ -61,13 +61,13 @@
             var props = censusTractData.features[i].properties;
 
             // for each of the CSV data rows
-            for (var j = 0; j < rentData.data.length; j++) {
+            for (var j = 0; j < rentData.results.length; j++) {
 
                 // if the census tract codes match
-                if (props.geoid == rentData.data[j].GEOID) {
+                if (props.geoid == rentData.results[j].GEOID) {
 
                     // reassign census tract properties using data
-                    censusTractData.features[i].properties = rentData.data[j];
+                    censusTractData.features[i].properties = rentData.results[j];
         
                     // stop loop after value is found
                     break;
@@ -79,22 +79,24 @@
         var rents = [];
         
         // loops through counties to get properties
-        censusTractData.features.forEach(function(censusTractData) { //don't know if inside function is correct
+        censusTractData.features.forEach(function(censusTract) {
 
             // loop through properties object in census tracts
-            for (var prop in censusTractData.properties) {
+            for (var prop in censusTract.properties) {
                     
                 // if statement checks if property value can be turned numeric to filter out text strings
                 if(+prop) {
                     // push properties into rates array
-                    rents.push(+censusTractData.properties[prop]);
+                    rents.push(+censusTract.properties[prop]);
                 }
                     
             }
-
+            
         });
         
         console.log(rents);
+        
+    
             
      /*   // create breaks using rates array data
         var breaks = chroma.limits(rates, 'q', 5);
