@@ -23,10 +23,10 @@
 
     // request data
     var censusTractJson = d3.json('data/or_census_tracts.json'),
-        rentCSV= d3.json('data/aff_housing_data.json');
+        rentJson= d3.json('data/aff_housing_data.json');
 
     // use the Promise to wait until all data files are loaded
-    Promise.all([censusTractJson, rentCSV]).then(ready);
+    Promise.all([censusTractJson, rentJson]).then(ready);
 
     // function fired if there is an error
     function error(error) {
@@ -35,7 +35,6 @@
 
     // function called when data is ready
     function ready(data) {
-        console.log(data) // data is an array of all datasets
 
         // data are ready to send to be joined or processed
         // add to map to test
@@ -50,9 +49,6 @@
         // data is array of our two datasets
         var censusTractData = data[0],
             rentData = data[1]
-        
-        console.log(censusTractData);
-        console.log(rentData);
         
         // loop through all the census tracts
         for (var i = 0; i < censusTractData.features.length; i++) {
@@ -75,8 +71,10 @@
             }
         }
             
+        console.log(censusTractData);
+        
         // create array to hold property values associated with census tracts
-        var rents = [];
+        var housingData = [];
         
         // loops through counties to get properties
         censusTractData.features.forEach(function(censusTract) {
@@ -94,7 +92,7 @@
             
         });
         
-        console.log(rents);
+        console.log(housingData);
         
     
             
