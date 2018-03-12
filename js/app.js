@@ -23,7 +23,7 @@
 
     // request data
     var censusTractJson = d3.json('data/or_census_tracts.json'),
-        rentJson= d3.json('data/aff_housing_data.json');
+        rentJson= d3.csv('data/aff_housing_data.csv');
 
     // use the Promise to wait until all data files are loaded
     Promise.all([censusTractJson, rentJson]).then(ready);
@@ -38,7 +38,7 @@
 
         // data are ready to send to be joined or processed
         // add to map to test
-        L.geoJSON(data[0]).addTo(map);
+        // L.geoJSON(data[0]).addTo(map);
         
         processData(data);
 
@@ -50,6 +50,8 @@
         var censusTractData = data[0],
             rentData = data[1]
         
+        console.log(rentData)
+
         // loop through all the census tracts
         for (var i = 0; i < censusTractData.features.length; i++) {
 
@@ -57,13 +59,13 @@
             var props = censusTractData.features[i].properties;
 
             // for each of the CSV data rows
-            for (var j = 0; j < rentData.results.length; j++) {
+            for (var j = 0; j < rentData.length; j++) {
 
                 // if the census tract codes match
-                if (props.geoid == rentData.results[j].GEOID) {
-
+                if (props.geoid == rentData[j].GEOID) {
+ 
                     // reassign census tract properties using data
-                    censusTractData.features[i].properties = rentData.results[j];
+                    censusTractData.features[i].properties.data = rentData[j];
         
                     // stop loop after value is found
                     break;
@@ -78,18 +80,12 @@
         
         // loops through counties to get properties
         censusTractData.features.forEach(function(censusTract) {
-
-            // loop through properties object in census tracts
-            for (var prop in censusTract.properties) {
-                    
-                // if statement checks if property value can be turned numeric to filter out text strings
-                if(+prop) {
-                    // push properties into rates array
-                    rents.push(+censusTract.properties[prop]);
-                }
-                    
-            }
-            
+            // if data has been added to a tract
+            if(censusTract.properties.data) {
+                
+                // these are features with data joined from CSV
+                console.log(censusTract)
+            }  
         });
         
         console.log(housingData);
