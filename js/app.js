@@ -49,8 +49,6 @@
         // data is array of our two datasets
         var censusTractData = data[0],
             rentData = data[1]
-        
-        console.log(rentData)
 
         // loop through all the census tracts
         for (var i = 0; i < censusTractData.features.length; i++) {
@@ -72,8 +70,6 @@
                 }
             }
         }
-            
-        console.log(censusTractData);
         
         // create array to hold property values associated with census tracts
         var housingData = [];
@@ -82,26 +78,119 @@
         censusTractData.features.forEach(function(censusTract) {
             // if data has been added to a tract
             if(censusTract.properties.data) {
-                
-                // these are features with data joined from CSV
-                console.log(censusTract)
+
+                // push properties into housing data array
+                housingData.push(censusTract.properties.data);
             }  
         });
         
         console.log(housingData);
         
+        // create array to hold rent values (just for first map)
+        var rentData = [];
+        
     
             
-     /*   // create breaks using rates array data
+     /* // create breaks using rates array data
         var breaks = chroma.limits(rates, 'q', 5);
 
         // create colorize function
-        var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
+        var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');*/
             
-        drawMap(counties, colorize);
-        drawLegend(breaks, colorize);*/
+        drawMap(censusTractData, housingData);
+        //drawLegend(breaks, colorize);
 
     } // end processData()
+    
+    function drawMap(censusTractData, housingData) {
+        
+        // create Leaflet object with geometry data and add to map
+            var dataLayer = L.geoJson(censusTractData, {
+                style: function(feature) {
+                    return {
+                        color: 'black',
+                        weight: 1,
+                        fillOpacity: 0,
+                    };
+                },
+                onEachFeature: function(feature, layer) {
+
+					// when mousing over a layer
+					layer.on('mouseover', function() {
+
+						// change the stroke color and bring that element to the front
+						layer.setStyle({
+							color: '#ff6e00',
+                            weight: 2
+						}).bringToFront();
+					});
+
+					// on mousing off layer
+					layer.on('mouseout', function() {
+
+						// reset the layer style to its original stroke color
+						layer.setStyle({
+							color: 'black',
+                            weight: 1
+						});
+					});
+
+                    // bind an empty tooltip to layer
+                    layer.bindTooltip('', {
+                        // sticky property so tooltip follows the mouse
+                        sticky: true,
+                        tooltipAnchor: [200, 200]
+                    });
+				} 
+            }).addTo(map);
+        
+        updateMap(dataLayer, housingData, '2000');
+        createSliderUI(dataLayer, housingData);
+        
+    }
+    
+    function createSliderUI(dataLayer, housingData) {
+
+            // create leaflet control for the slider
+            var sliderControl = L.control({ position: 'bottomleft'} );
+
+            // when added to the map
+            sliderControl.onAdd = function(map) {
+
+                // select existing DOM element with id "ui-controls"
+                var slider = L.DomUtil.get("ui-controls");
+
+                // disable scrolling of map while using controls
+                L.DomEvent.disableScrollPropagation(slider);
+
+                // disable click events while using controls
+                L.DomEvent.disableClickPropagation(slider);
+
+                // return the slider from the onAdd method
+                return slider;
+                
+            }
+
+            // add control to map
+            sliderControl.addTo(map);
+            
+            // select the form element
+            $(".year-slider")
+                .on("input change", function() {
+                    var currentYear = this.value;
+                    $('.legend h3 span').html(currentYear);
+                    updateMap(dataLayer, colorize, currentYear);
+
+                });
+            
+        } // end createSliderUI
+    
+    function updateMap(dataLayer, housingData, currentYear) {
+        
+        
+        
+    }
+    
     
     
     
