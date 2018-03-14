@@ -20,6 +20,17 @@
         subdomains: 'abcd',
         maxZoom: 19
     }).addTo(map);
+    
+    // set global variables for map layer,
+    var attributeValue = "Rent_ch10_15";
+
+    // create object to hold legend titles
+    var labels = {
+        "Rent_ch10_15": "Percent change in gross rent",
+        "lowinc_ch10_15": "Percent change in low-income households",
+        "af_ch_10_15": "Percent change in market rate affordable housing",
+        "MHSP10_15": "Percent change in medium home sale price"
+    }
 
     // request data
     var censusTractJson = d3.json('data/or_census_tracts.json'),
@@ -35,10 +46,6 @@
 
     // function called when data is ready
     function ready(data) {
-
-        // data are ready to send to be joined or processed
-        // add to map to test
-        // L.geoJSON(data[0]).addTo(map);
         
         processData(data);
 
@@ -71,38 +78,33 @@
             }
         }
         
-        // create array to hold property values associated with census tracts
-        var housingData = [];
+        // create array to hold initial variable values
+        var rentChange = [];
         
         // loops through counties to get properties
         censusTractData.features.forEach(function(censusTract) {
             // if data has been added to a tract
             if(censusTract.properties.data) {
 
-                // push properties into housing data array
-                housingData.push(censusTract.properties.data);
+                // push properties into rent change array
+                rentChange.push(censusTract.properties.data['Rent_ch10_15']);
             }  
         });
         
-        console.log(housingData);
+        console.log(rentChange);
         
-        // create array to hold rent values (just for first map)
-        var rentData = [];
-        
-    
-            
-     /* // create breaks using rates array data
-        var breaks = chroma.limits(rates, 'q', 5);
+        // create breaks using rates array data
+        var breaks = chroma.limits(rentChange, 'q', 5);
 
         // create colorize function
-        var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');*/
+        var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
             
-        drawMap(censusTractData, housingData);
+        drawMap(censusTractData, colorize);
         //drawLegend(breaks, colorize);
 
     } // end processData()
     
-    function drawMap(censusTractData, housingData) {
+    function drawMap(censusTractData, colorize) {
         
         // create Leaflet object with geometry data and add to map
             var dataLayer = L.geoJson(censusTractData, {
@@ -144,52 +146,56 @@
 				} 
             }).addTo(map);
         
-        updateMap(dataLayer, housingData, '2000');
-        createSliderUI(dataLayer, housingData);
+        updateMap(dataLayer, colorize);
+        addUi(dataLayer, colorize);
         
     }
     
-    function createSliderUI(dataLayer, housingData) {
-
-            // create leaflet control for the slider
-            var sliderControl = L.control({ position: 'bottomleft'} );
-
-            // when added to the map
-            sliderControl.onAdd = function(map) {
-
-                // select existing DOM element with id "ui-controls"
-                var slider = L.DomUtil.get("ui-controls");
-
-                // disable scrolling of map while using controls
-                L.DomEvent.disableScrollPropagation(slider);
-
-                // disable click events while using controls
-                L.DomEvent.disableClickPropagation(slider);
-
-                // return the slider from the onAdd method
-                return slider;
+    function updateMap(dataLayer, colorize) {
+        
+        // use leaflet method to iterate through each layer
+            dataLayer.eachLayer(function(layer) {
+               
+                // create shortcut into properties
+                var props = layer.feature.properties;
                 
-            }
-
-            // add control to map
-            sliderControl.addTo(map);
-            
-            // select the form element
-            $(".year-slider")
-                .on("input change", function() {
-                    var currentYear = this.value;
-                    $('.legend h3 span').html(currentYear);
-                    updateMap(dataLayer, colorize, currentYear);
-
+                // set layer style using selected year property
+                layer.setStyle({
+                    fillColor: colorize(props[attributeValue])
                 });
-            
-        } // end createSliderUI
+                
+                /*// assemble string sequence of info for tooltip (end line break with + operator)
+				var tooltipInfo = "<b>" + props["NAME"] + 
+				                  "</b></br>" + props[currentYear] + "% Unemployment";
+                
+                //update tooltip content for each layer
+                layer.setTooltipContent(tooltipInfo);*/
+                
+            });   
+        
+    } // end updateMap()
     
-    function updateMap(dataLayer, housingData, currentYear) {
-        
-        
-        
-    }
+    // adds UI and listens for user input
+    function addUi(dataLayer, colorize) {
+        // create the slider control
+        var selectControl = L.control({ position: 'topright'} );
+
+        // when control is added
+        selectControl.onAdd = function(map) {
+            // get the element with id attribute of ui-controls
+            return L.DomUtil.get("ui-controls");
+        }
+          
+        // add the control to the map
+        selectControl.addTo(map);
+            
+        $('select[id="occupied"]').change(function() {
+
+            attributeValue = this.value;
+            updateMap(dataLayer, colorize);
+
+        });    
+    } // end addUi()
     
     
     
