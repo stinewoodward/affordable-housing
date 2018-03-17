@@ -163,26 +163,25 @@
     function updateMap(dataLayer, colorize) {
         
         // use leaflet method to iterate through each layer
-            dataLayer.eachLayer(function(layer) {
+        dataLayer.eachLayer(function(layer) {
                
-                // create shortcut into properties
-                var props = layer.feature.properties;
-                if(props.data) {
-                    console.log(colorize(props.data[attributeValue]))
-                    layer.setStyle({
-                        fillColor: colorize(props.data[attributeValue])
-                    }); 
-                }
+            // create shortcut into properties
+            var props = layer.feature.properties;
+            if(props.data) {
+                console.log(colorize(props.data[attributeValue]))
+                layer.setStyle({
+                    fillColor: colorize(props.data[attributeValue])
+                }); 
+            }
 
                 
-                /*// assemble string sequence of info for tooltip (end line break with + operator)
-				var tooltipInfo = "<b>" + props["NAME"] + 
-				                  "</b></br>" + props[currentYear] + "% Unemployment";
+            // assemble string sequence of info for tooltip (end line break with + operator)
+            var tooltipInfo = "<b>" + props[attributeValue] + "</b>";
                 
-                //update tooltip content for each layer
-                layer.setTooltipContent(tooltipInfo);*/
+            //update tooltip content for each layer
+            layer.setTooltipContent(tooltipInfo);
                 
-            });   
+    });   
         
     } // end updateMap()
     
