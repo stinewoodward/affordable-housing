@@ -77,32 +77,40 @@
                 }
             }
         }
+            
+        colorize(censusTractData);
+        //drawLegend(breaks, colorize);
+
+    } // end processData()
+    
+    function colorize(censusTractData) {
         
-        // create array to hold initial variable values
-        var rentChange = [];
+        // create array to hold variable values for visualization
+        var attributeArray = [];
         
         // loops through counties to get properties
         censusTractData.features.forEach(function(censusTract) {
             // if data has been added to a tract
             if(censusTract.properties.data) {
-
-                // push properties into rent change array
-                rentChange.push(censusTract.properties.data['Rent_ch10_15']);
+                
+                // current value Array
+                var currentArray = [];
+                
+                // push properties into current value array
+                currentArray.push(censusTract.properties.data[attributeValue]);
+                attributeArray = currentArray; // replace previous attribute array values with new variable values
             }  
         });
         
-        console.log(rentChange);
-        
         // create breaks using rates array data
-        var breaks = chroma.limits(rentChange, 'q', 5);
+        var breaks = chroma.limits(attributeArray, 'q', 5);
 
         // create colorize function
         var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
-            
-        drawMap(censusTractData, colorize);
-        //drawLegend(breaks, colorize);
-
-    } // end processData()
+        
+        drawMap(censusTractData, colorize)
+        
+    }
     
     function drawMap(censusTractData, colorize) {
         
