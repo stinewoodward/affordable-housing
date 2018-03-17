@@ -112,7 +112,8 @@
                     return {
                         color: 'black',
                         weight: 1,
-                        fillOpacity: 0,
+                        fillOpacity: 1,
+                        fillColor: 'white'
                     };
                 },
                 onEachFeature: function(feature, layer) {
@@ -158,11 +159,13 @@
                
                 // create shortcut into properties
                 var props = layer.feature.properties;
-                
-                // set layer style using selected year property
-                layer.setStyle({
-                    fillColor: colorize(props[attributeValue])
-                });
+                if(props.data) {
+                    console.log(colorize(props.data[attributeValue]))
+                    layer.setStyle({
+                        fillColor: colorize(props.data[attributeValue])
+                    }); 
+                }
+
                 
                 /*// assemble string sequence of info for tooltip (end line break with + operator)
 				var tooltipInfo = "<b>" + props["NAME"] + 
