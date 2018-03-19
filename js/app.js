@@ -46,9 +46,7 @@
 
     // function called when data is ready
     function ready(data) {
-        
         processData(data);
-
     } 
     
     function processData(data) {
@@ -56,7 +54,7 @@
         // data is array of our two datasets
         var censusTractData = data[0],
             rentData = data[1]
-
+          
         // loop through all the census tracts
         for (var i = 0; i < censusTractData.features.length; i++) {
 
@@ -65,7 +63,7 @@
 
             // for each of the CSV data rows
             for (var j = 0; j < rentData.length; j++) {
-
+                
                 // if the census tract codes match
                 if (props.geoid == rentData[j].GEOID) {
  
@@ -75,44 +73,16 @@
                     // stop loop after value is found
                     break;
                 }
+    
             }
         }
-            
-        colorize(censusTractData);
+
+        drawMap(censusTractData)
         //drawLegend(breaks, colorize);
 
     } // end processData()
     
-    function colorize(censusTractData) {
-        
-        // create array to hold variable values for visualization
-        var attributeArray = [];
-        
-        // loops through counties to get properties
-        censusTractData.features.forEach(function(censusTract) {
-            // if data has been added to a tract
-            if(censusTract.properties.data) {
-                
-                // current value Array
-                var currentArray = [];
-                
-                // push properties into current value array
-                currentArray.push(censusTract.properties.data[attributeValue]);
-                attributeArray = currentArray; // replace previous attribute array values with new variable values
-            }  
-        });
-        
-        // create breaks using rates array data
-        var breaks = chroma.limits(attributeArray, 'q', 5);
-
-        // create colorize function
-        var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
-        
-        drawMap(censusTractData, colorize)
-        
-    }
-    
-    function drawMap(censusTractData, colorize) {
+    function drawMap(censusTractData) {
         
         // create Leaflet object with geometry data and add to map
             var dataLayer = L.geoJson(censusTractData, {
@@ -155,38 +125,54 @@
 				} 
             }).addTo(map);
         
-        updateMap(dataLayer, colorize);
-        addUi(dataLayer, colorize);
+        updateMap(dataLayer);
+        addUi(dataLayer);
         
     }
     
-    function updateMap(dataLayer, colorize) {
-        
+    function updateMap(dataLayer) {
+
+        // get the class breaks
+        var breaks = getClassBreaks(dataLayer)
+
+        console.log(breaks)
+
+        var colorizePositive = chroma.scale(chroma.brewer.OrRd).classes(breaks[0]).mode('lab'),
+            colorizeNegative = chroma.scale(chroma.brewer.YlGnBu).classes(breaks[1]).mode('lab');
+         
         // use leaflet method to iterate through each layer
         dataLayer.eachLayer(function(layer) {
                
             // create shortcut into properties
             var props = layer.feature.properties;
             if(props.data) {
-                console.log(colorize(props.data[attributeValue]))
-                layer.setStyle({
-                    fillColor: colorize(props.data[attributeValue])
-                }); 
+                // console.log(props.data[attributeValue])
+                if(props.data[attributeValue] < 0) {
+                    layer.setStyle({
+                        fillColor: colorizeNegative(props.data[attributeValue])
+                    }); 
+                } else {
+                    layer.setStyle({
+                        fillColor: colorizePositive(props.data[attributeValue])
+                    }); 
+                }
+       
             }
-
-                
+    
             // assemble string sequence of info for tooltip (end line break with + operator)
             var tooltipInfo = "<b>" + props[attributeValue] + "</b>";
                 
             //update tooltip content for each layer
             layer.setTooltipContent(tooltipInfo);
                 
-    });   
+        });
+        
+        // call updateLegend here
         
     } // end updateMap()
     
     // adds UI and listens for user input
-    function addUi(dataLayer, colorize) {
+    function addUi(dataLayer) {
         // create the slider control
         var selectControl = L.control({ position: 'topright'} );
 
@@ -202,15 +188,33 @@
         $('select[id="occupied"]').change(function() {
 
             attributeValue = this.value;
-            updateMap(dataLayer, colorize);
+            updateMap(dataLayer);
 
         });    
     } // end addUi()
-    
-    
-    
-    
 
+    function getClassBreaks(dataLayer) {
+     
+        var positiveValues = [],
+            negativeValues = []
 
+        dataLayer.eachLayer(function(layer) {
 
+            var props = layer.feature.properties;
+            if(props.data) {
+                if(+props.data[attributeValue] > 0) {
+                    positiveValues.push(+props.data[attributeValue])
+                } else {
+                    negativeValues.push(+props.data[attributeValue]) 
+                }
+                
+            }
+
+        })
+
+        return [chroma.limits(positiveValues, 'q', 5),  chroma.limits(negativeValues, 'q', 5)]
+
+    }
+    
+    
 })();
