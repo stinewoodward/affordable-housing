@@ -138,7 +138,7 @@
         console.log(breaks)
 
         var colorizePositive = chroma.scale(chroma.brewer.OrRd).classes(breaks[0]).mode('lab'),
-            colorizeNegative = chroma.scale(chroma.brewer.YlGnBu).classes(breaks[1]).mode('lab');
+            colorizeNegative = chroma.scale(['navy', '#acc6ef']).classes(breaks[1]).domain([1,0]);
          
         // use leaflet method to iterate through each layer
         dataLayer.eachLayer(function(layer) {
