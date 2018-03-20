@@ -26,10 +26,10 @@
 
     // create object to hold legend titles
     var labels = {
-        "Rent_ch10_15": "Percent change in gross rent",
-        "lowinc_ch10_15": "Percent change in low-income households",
-        "af_ch_10_15": "Percent change in market rate affordable housing",
-        "MHSP10_15": "Percent change in medium home sale price"
+        "Rent_ch10_15": "Change in gross rent",
+        "lowinc_ch10_15": "Change in low-income households",
+        "af_ch_10_15": "Change in market rate affordable housing",
+        "MHSP10_15": "Change in medium home sale price"
     }
 
     // request data
@@ -38,11 +38,6 @@
 
     // use the Promise to wait until all data files are loaded
     Promise.all([censusTractJson, rentJson]).then(ready);
-
-    // function fired if there is an error
-    function error(error) {
-        console.log(error)
-    }
 
     // function called when data is ready
     function ready(data) {
@@ -77,8 +72,7 @@
             }
         }
 
-        drawMap(censusTractData)
-        //drawLegend(breaks, colorize);
+        drawMap(censusTractData);
 
     } // end processData()
     
@@ -93,6 +87,9 @@
                         fillOpacity: 1,
                         fillColor: 'white'
                     };
+                },
+                filter: function (feature, layer) {
+                    if(feature.properties.data != null) return true
                 },
                 onEachFeature: function(feature, layer) {
 
@@ -115,13 +112,6 @@
                             weight: 1
 						});
 					});
-
-                    // bind an empty tooltip to layer
-                    layer.bindTooltip('', {
-                        // sticky property so tooltip follows the mouse
-                        sticky: true,
-                        tooltipAnchor: [200, 200]
-                    });
 				} 
             }).addTo(map);
         
@@ -133,9 +123,7 @@
     function updateMap(dataLayer) {
 
         // get the class breaks
-        var breaks = getClassBreaks(dataLayer)
-
-        console.log(breaks)
+        var breaks = getClassBreaks(dataLayer);
 
         var colorizePositive = chroma.scale(chroma.brewer.OrRd).classes(breaks[0]).mode('lab'),
             colorizeNegative = chroma.scale(['navy', '#acc6ef']).classes(breaks[1]).domain([1,0]);
@@ -145,8 +133,9 @@
                
             // create shortcut into properties
             var props = layer.feature.properties;
+            
             if(props.data) {
-                // console.log(props.data[attributeValue])
+            
                 if(props.data[attributeValue] < 0) {
                     layer.setStyle({
                         fillColor: colorizeNegative(props.data[attributeValue])
@@ -156,20 +145,71 @@
                         fillColor: colorizePositive(props.data[attributeValue])
                     }); 
                 }
+                
+                // assemble string sequence of info for tooltip (end line break with + operator)
+                var tooltipInfo =   "<b>" + labels[attributeValue] + ":  </b>" +
+                                    "<br>" +
+                                    props.data[attributeValue].toLocaleString() + 
+                                    "%</b>";
+            
+                // bind an empty tooltip to layer
+                layer.bindTooltip(tooltipInfo, {
+                    // sticky property so tooltip follows the mouse
+                    sticky: true,
+                    tooltipAnchor: [200, 200]
+                });
        
             }
-    
-            // assemble string sequence of info for tooltip (end line break with + operator)
-            var tooltipInfo = "<b>" + props[attributeValue] + "</b>";
-                
-            //update tooltip content for each layer
-            layer.setTooltipContent(tooltipInfo);
                 
         });
         
-        // call updateLegend here
+        //drawLegend(colorizeNegative, colorizePositive);
+        //updateLegend(colorizeNegative, colorizePositive);
         
     } // end updateMap()
+    
+    /*function drawLegend(colorizePositive, colorizeNegative) {
+            
+        // create a new Leaflet control object, and position it top left
+        var legendControl = L.control({ position: 'topleft' });
+
+        // when the legend is added to the map
+        legendControl.onAdd = function(map) {
+
+            // select a div element with an id attribute of legend
+            var legend = L.DomUtil.get('legend');
+
+            // disable scroll and click/touch on map when on legend
+            L.DomEvent.disableScrollPropagation(legend);
+            L.DomEvent.disableClickPropagation(legend);
+
+            // return the selection to the method
+            return legend;
+
+        };
+
+        // add the empty legend div to the map
+        legendControl.addTo(map);
+            
+    } // end drawLegend ()
+    
+    // updates legend according to user input
+    function updateLegend(colorizePositive, colorizeNegative) {
+        
+        // select the legend, add a title, begin an unordered list and assign to a variable
+        var legend = $('#legend').html("<h5>" + labels[attributeValue] + "</h5>");
+
+        // loop through the Array of classification break values
+        for (var i = 0; i <= colorizePositive.length - 1; i++) {
+
+            legend.append(
+                '<span style="background:' + colorizePositive + '"></span> ' +
+				'<label>' + (breaks[i][0] * 100).toLocaleString() + ' &mdash; ' +
+				(breaks[i][1] * 100).toLocaleString() + ' %</label>');
+			}
+            
+    } // end updateLegend()*/
+
     
     // adds UI and listens for user input
     function addUi(dataLayer) {
