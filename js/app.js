@@ -5,7 +5,7 @@
         scrollWheelZoom: true,
         zoomSnap: .1,
         dragging: true,
-        center: [45.5231, -122.6765],
+        center: [45.546, -122.63],
         zoom: 11,
         minZoom: 10,
         maxZoom: 14,
@@ -125,7 +125,7 @@
         // get the class breaks
         var breaks = getClassBreaks(dataLayer);
 
-        var colorizePositive = chroma.scale(chroma.brewer.OrRd).classes(breaks[0]).mode('lab'),
+        var colorizePositive = chroma.scale(chroma.brewer.OrRd).classes(breaks[0]).mode('lab').padding([0.1, 0]),
             colorizeNegative = chroma.scale(['navy', '#acc6ef']).classes(breaks[1]).domain([1,0]);
          
         // use leaflet method to iterate through each layer
@@ -252,7 +252,7 @@
 
         })
 
-        return [chroma.limits(positiveValues, 'q', 5),  chroma.limits(negativeValues, 'q', 5)]
+        return [chroma.limits(positiveValues, 'q', 5),  chroma.limits(negativeValues, 'q', 3)]
 
     }
     
