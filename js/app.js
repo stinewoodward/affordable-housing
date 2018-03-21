@@ -2,7 +2,7 @@
 
     // map options
     var options = {
-        scrollWheelZoom: true,
+        scrollWheelZoom: false,
         zoomSnap: .1,
         dragging: true,
         center: [45.546, -122.63],
@@ -26,12 +26,12 @@
 
     // create object to hold legend titles
     var labels = {
-        "Rent10": "Gross rent in 2010",
-        "Rent15": "Gross rent in 2015",
-        "Rent_ch10_15": "Change in gross rent, 2010-2015",
-        "MHSP_2010": "Median home sale price, 2010",
-        "MHSP_2015": "Median home sale price, 2015",
-        "MHSP10_15": "Change in medium home sale price, 2010-2015"
+        "Rent10": "Gross rent in 2010 in US$",
+        "Rent15": "Gross rent in 2015 in US$",
+        "Rent_ch10_15": "Change in gross rent in US$, 2010-2015",
+        "MHSP_2010": "Median home sale price in US$, 2010",
+        "MHSP_2015": "Median home sale price in US$, 2015",
+        "MHSP10_15": "Change in medium home sale price in US$, 2010-2015"
     }
 
     // request data
@@ -153,7 +153,7 @@
                                     "<b>" + labels[attributeValue] + ":  </b>" +
                                     "<br>" +
                                     props.data[attributeValue].toLocaleString() + 
-                                    "%</b>";
+                                    "</b>";
             
                 // bind an empty tooltip to layer
                 layer.bindTooltip(tooltipInfo, {
