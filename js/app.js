@@ -22,14 +22,16 @@
     }).addTo(map);
     
     // set global variables for map layer,
-    var attributeValue = "Rent_ch10_15";
+    var attributeValue = "Rent10";
 
     // create object to hold legend titles
     var labels = {
-        "Rent_ch10_15": "Change in gross rent",
-        "lowinc_ch10_15": "Change in low-income households",
-        "af_ch_10_15": "Change in market rate affordable housing",
-        "MHSP10_15": "Change in medium home sale price"
+        "Rent10": "Gross rent in 2010",
+        "Rent15": "Gross rent in 2015",
+        "Rent_ch10_15": "Change in gross rent, 2010-2015",
+        "MHSP_2010": "Median home sale price, 2010",
+        "MHSP_2015": "Median home sale price, 2015",
+        "MHSP10_15": "Change in medium home sale price, 2010-2015"
     }
 
     // request data
