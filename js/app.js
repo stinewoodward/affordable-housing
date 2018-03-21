@@ -147,7 +147,8 @@
                 }
                 
                 // assemble string sequence of info for tooltip (end line break with + operator)
-                var tooltipInfo =   "<b>" + labels[attributeValue] + ":  </b>" +
+                var tooltipInfo =   "<b>" + props.data['NH'] + " Neighborhood</b><br><br>" +
+                                    "<b>" + labels[attributeValue] + ":  </b>" +
                                     "<br>" +
                                     props.data[attributeValue].toLocaleString() + 
                                     "%</b>";
