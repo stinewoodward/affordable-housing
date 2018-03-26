@@ -171,10 +171,10 @@
         
     } // end updateMap()
     
-    /*function drawLegend(colorizePositive, colorizeNegative) {
+    function drawLegend(colorizePositive, colorizeNegative) {
             
         // create a new Leaflet control object, and position it top left
-        var legendControl = L.control({ position: 'topleft' });
+        var legendControl = L.control({ position: 'bottomleft' });
 
         // when the legend is added to the map
         legendControl.onAdd = function(map) {
@@ -190,7 +190,7 @@
             return legend;
 
         };
-
+        
         // add the empty legend div to the map
         legendControl.addTo(map);
             
@@ -211,7 +211,7 @@
 				(breaks[i][1] * 100).toLocaleString() + ' %</label>');
 			}
             
-    } // end updateLegend()*/
+    } // end updateLegend()
 
     
     // adds UI and listens for user input

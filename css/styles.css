@@ -11,7 +11,7 @@
     white-space: normal;
 }
 
-.legend {
+#legend {
     padding: 6px 8px;
     font-size: 1em;
     background: rgba(75, 75, 75, 0.8);
@@ -21,7 +21,7 @@
     width: 160px;
 }
 
-.legend h3 {
+#legend h3 {
     font-size: 1.1em;
     font-weight: bold;
     line-height: 1em;
@@ -29,22 +29,22 @@
     margin: 0;
 }
 
-.legend h3 span {
+#legend h3 span {
     font-size: 1.3em;
     margin: 0 20px 0 0;
 }
 
-.legend ul {
+#legend ul {
     list-style-type: none;
     padding: 0;
     margin: 12px 4px 0;
 }
 
-.legend li {
+#legend li {
     height: 22px;
 }
 
-.legend span {
+#legend span {
     width: 30px;
     height: 20px;
     float: left;
