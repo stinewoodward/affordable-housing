@@ -140,16 +140,18 @@
             
                 if(props.data[attributeValue] < 0) {
                     layer.setStyle({
-                        fillColor: colorizeNegative(props.data[attributeValue])
+                        fillColor: colorizeNegative(props.data[attributeValue]),
+                        fillOpacity: 0.6
                     }); 
                 } else {
                     layer.setStyle({
-                        fillColor: colorizePositive(props.data[attributeValue])
+                        fillColor: colorizePositive(props.data[attributeValue]),
+                        fillOpacity: 0.6
                     }); 
                 }
                 
                 // assemble string sequence of info for tooltip (end line break with + operator)
-                var tooltipInfo =   "<b>" + props.data['NH'] + " Neighborhood</b><br><br>" +
+                var tooltipInfo =   "<b>" + props.data['NH'] + "</b><br><br>" +
                                     "<b>" + labels[attributeValue] + ":  </b>" +
                                     "<br>" +
                                     props.data[attributeValue].toLocaleString() + 
