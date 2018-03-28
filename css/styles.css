@@ -6,7 +6,7 @@
 }
 
 .leaflet-tooltip {
-    min-width: 180px;
+    min-width: 200px;
     font-size: 130%;
     white-space: normal;
 }
