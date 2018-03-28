@@ -1,9 +1,12 @@
 /* custom CSS rules */
-
-/* display none for layout but be careful of license restrictions */
-.mapbox-logo, .leaflet-control-attribution {
-    display: none; 
+h1 {
+    font-weight: bold;
 }
+
+h3 {
+    font-weight: 550;
+}
+
 
 .leaflet-tooltip {
     min-width: 200px;
@@ -18,7 +21,7 @@
     color: whitesmoke;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    width: 160px;
+    display: inline-block;
 }
 
 #legend h3 {
@@ -27,6 +30,8 @@
     line-height: 1em;
     color: whitesmoke;
     margin: 0;
+    line-height: 1.4em;
+
 }
 
 #legend h3 span {
@@ -49,14 +54,6 @@
     height: 20px;
     float: left;
     margin-right: 10px;
-}
-
-h1 {
-    font-weight: bold;
-}
-
-h3 {
-    font-weight: 550;
 }
 
 #ui-controls {
