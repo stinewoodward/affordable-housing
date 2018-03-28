@@ -18,20 +18,31 @@
       <div class='flex-parent flex-parent--column viewport-third h-full-ml hmax-full bg-white py18 px12'>
         <div class='flex-child flex-child--grow px12 py12 scroll-auto'>
           <h1 class='txt-xl mb4'>Affordable Housing in Portland, OR</h1>
-            <br>
-            <p>To quote CNN's <a target="_blank" class="link" href="http://money.cnn.com/2016/02/05/pf/oregon-unaffordable-california/index.html">Kathryn Vasel</a>: "Everyone wants to move to Portland."</p>
-            <br>
-            <p>Yes, Portland is hip. Portland is cool. And Portland is running out of space. As housing prices continue to rise, which neighborhoods are bearing the brunt? </p>
+          <br>
+          <p>To quote CNN's
+            <a target="_blank" class="link" href="http://money.cnn.com/2016/02/05/pf/oregon-unaffordable-california/index.html">Kathryn Vasel</a>: "Everyone wants to move to Portland."</p>
+          <br>
+          <p>Yes, Portland is hip. Portland is cool. And Portland is running out of space. As housing prices continue to rise,
+            which neighborhoods are bearing the brunt? </p>
           <h3 class='txt-l mt18 mb12'>Median Gross Rent</h3>
-          <p>The first variable for your exploration is median gross rent. Gross rent is calculated by combining contract rent and estimated average monthly utilities. As a category, then, gross rent is meant to make rents comparable whether or not landlords include utilities in the contract price. </p>
-            <br>
-          <p>As explained in a <a target="_blank" class="link" href="http://www.wweek.com/news/2016/08/19/the-state-of-portland-rental-breakdown/">2016 Portland Housing Bureau study</a>, cost of rent has risen faster in East Portland - a less wealthy part of the city known for being home to many of the city's East Asian immigrant families - than other parts of the city. Portland has seen a subsequent rise in no-cause evictions in areas with steeply rising rent.</p>
+          <p>The first variable for your exploration is median gross rent. Gross rent is calculated by combining contract rent
+            and estimated average monthly utilities. As a category, then, gross rent is meant to make rents comparable whether
+            or not landlords include utilities in the contract price. </p>
+          <br>
+          <p>As explained in a
+            <a target="_blank" class="link" href="http://www.wweek.com/news/2016/08/19/the-state-of-portland-rental-breakdown/">2016 Portland Housing Bureau study</a>, cost of rent has risen faster in East Portland - a less wealthy part
+            of the city known for being home to many of the city's East Asian immigrant families - than other parts of the
+            city. Portland has seen a subsequent rise in no-cause evictions in areas with steeply rising rent.</p>
           <h3 class='txt-l mt18 mb12'>Median Home Sale Price</h3>
-          <p>Median home sale price is another indicator of housing affordability in Portland. A <a target="_blank" class="link" href="https://oregoneconomicanalysis.com/2016/04/26/portland-affordability-in-comparison/">2016 Oregon Office of Economic Analysis report</a> shows that of 31 metro areas with comparable median household incomes to Portland, 28 had lower median housing prices. </p>
+          <p>Median home sale price is another indicator of housing affordability in Portland. A
+            <a target="_blank" class="link"
+              href="https://oregoneconomicanalysis.com/2016/04/26/portland-affordability-in-comparison/">2016 Oregon Office of Economic Analysis report</a> shows that of 31 metro areas with comparable median household
+            incomes to Portland, 28 had lower median housing prices. </p>
           <br>
           <p>From the maps presented here, it appears the sharpest increases in home sale prices were in North and East Portland.</p>
           <h3 class='txt-l mt18 mb12'>Sources</h3>
-          <p>This map was inspired <a target='_blank' class='link' href='http://www.urbandisplacement.org/map/pdx'>Portland State University's Urban Displacement project</a> Portland State University's Urban Displacement project.</p>
+          <p>This map was inspired
+            <a target='_blank' class='link' href='http://www.urbandisplacement.org/map/pdx'>Portland State University's Urban Displacement project</a> Portland State University's Urban Displacement project.</p>
         </div>
         <footer class='px12 py12 bg-gray-faint txt-s'>
           <ul>
@@ -47,24 +58,24 @@
     </div>
     <div class='flex-child flex-child--grow viewport-twothirds viewport-full-ml'>
       <div id="map" class='viewport-twothirds viewport-full-ml'></div>
-      </div>    
+    </div>
   </div>
-    
+
   <!-- ui control to choose attribute -->
   <div id='ui-controls' class='pt6 px12 pb6 bg-white border border--gray-light round'>
     <label>Choose a data attribute:</label>
     <select id="occupied">
-        <option value="Rent10" selected>Gross rent in 2010</option>
-        <option value="Rent15">Gross rent in 2015</option>
-        <option value="Rent_ch10_15">Percent change in gross rent, 2010-2015</option>
-        <option value="MHSP_2010">Median home sale price, 2010</option>
-        <option value="MHSP_2015">Median home sale price, 2015</option>
-        <option value="MHSP10_15">Percent change in median home sale price, 2010-2015</option>
+      <option value="Rent10" selected>Gross rent in 2010</option>
+      <option value="Rent15">Gross rent in 2015</option>
+      <option value="Rent_ch10_15">Percent change in gross rent, 2010-2015</option>
+      <option value="MHSP_2010">Median home sale price, 2010</option>
+      <option value="MHSP_2015">Median home sale price, 2015</option>
+      <option value="MHSP10_15">Percent change in median home sale price, 2010-2015</option>
     </select>
   </div>
-    
+
   <!-- legend -->
-  <div id="legend" class="w240 round shadow-darken10 px12 py12 txt-s">
+  <div id="legend" class="round shadow-darken10 px12 py12 txt-s">
     <strong id="legend-title" class="block mb6">Title</strong>
   </div>
 
@@ -81,7 +92,7 @@
   <!-- load custom script last -->
   <script src='js/app.js'></script>
 
-  
+
 
 </body>
 
