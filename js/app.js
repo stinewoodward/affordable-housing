@@ -5,7 +5,7 @@
     scrollWheelZoom: false,
     zoomSnap: .1,
     dragging: true,
-    center: [45.546, -122.63],
+    center: [45.546, -122.65],
     zoom: 11,
     minZoom: 10,
     maxZoom: 14,
@@ -156,6 +156,7 @@
 
         // assemble string sequence of info for tooltip (end line break with + operator)
         var tooltipInfo = "<b>" + props.data['NH'] + "</b>" +
+          "<br><br>" +
           "<b>" + labels[attributeValue] + ":  </b>" +
           "<br>" +
           props.data[attributeValue].toLocaleString() +
