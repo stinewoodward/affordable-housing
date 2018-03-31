@@ -153,13 +153,15 @@
           });
 
         }
+          
+        
 
         // assemble string sequence of info for tooltip (end line break with + operator)
         var tooltipInfo = "<b>" + props.data['NH'] + "</b>" +
           "<br><br>" +
           "<b>" + labels[attributeValue] + ":  </b>" +
           "<br>" +
-          props.data[attributeValue].toLocaleString() +
+          (Math.round(props.data[attributeValue] * 1000) / 1000).toLocaleString() +
           "</b>";
 
         // bind an empty tooltip to layer
@@ -172,7 +174,7 @@
       }
 
     });
-    console.log(breaks)
+    
     updateLegend(breaks, colorizePositive, colorizeNegative);
 
   } // end updateMap()
